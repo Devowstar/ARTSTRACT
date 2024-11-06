@@ -52,12 +52,12 @@
     <img class="collage" src="./img/collage.jpg" height="460" alt="" width="">
 </div>
 
-
-    
-
-    <div id="user-info">
+ <div id="user-info">
         <img id="fotoPerfil" src="./img/per.jpg"   width="100">
         <h2 id="displayName">Usuario</h2>
+    </div>
+       <!-- Botón para abrir el modal de actualización -->
+        <button data-bs-toggle="modal" data-bs-target="#actualizarModal">Actualizar Perfil</button>
     </div>
  
     <!-- Textarea para hacer publicaciones -->
@@ -85,6 +85,33 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">Cerrar</button>
                     <button type="button" class="btn btn-success" id="guardarCambios">Guardar cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para actualizar usuario y foto -->
+    <div class="modal fade" id="actualizarModal" tabindex="-1" aria-labelledby="actualizarModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="actualizarModalLabel">Actualizar Perfil</h5>
+                </div>
+                <div class="modal-body">
+                    <!-- Formulario para actualizar usuario y foto -->
+                    <div class="mb-3">
+                        <label for="nuevoNombre" class="form-label">Nuevo Nombre de Usuario</label>
+                        <input type="text" id="nuevoNombre" class="form-control" placeholder="Ingresa tu nuevo nombre">
+                    </div>
+                    <div class="mb-3">
+                        <label for="nuevaFoto" class="form-label">Nueva Foto de Perfil</label>
+                        <input type="file" id="nuevaFoto" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="guardarPerfil">Guardar Cambios</button>
                 </div>
             </div>
         </div>
