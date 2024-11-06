@@ -1,20 +1,21 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-analytics.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-analytics.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 // TODO: Add SDKs for Firebase products that you want to use
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA-S3y6iSm7cNYNtdDu1lhSyBxhr72F6K0",
-  authDomain: "prueba-11266.firebaseapp.com",
-  projectId: "prueba-11266",
-  storageBucket: "prueba-11266.appspot.com",
-  messagingSenderId: "792080090387",
-  appId: "1:792080090387:web:c75170c003e46e4fe446e6"
+apiKey: "AIzaSyBFXRAaZEYD6WGvoF6QRCFt82gD5BBlyxQ",
+    authDomain: "developer-62567.firebaseapp.com",
+    projectId: "developer-62567",
+    storageBucket: "developer-62567.appspot.com",
+    messagingSenderId: "92506163991",
+    appId: "1:92506163991:web:ebf8f910cfd3257a288552",
+    measurementId: "G-34J7CJ0G8N"
 };
 
 // Initialize Firebase
