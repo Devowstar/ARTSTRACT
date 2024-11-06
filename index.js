@@ -1,7 +1,7 @@
 // Importar Firebase y las funciones necesarias
 import './firebase.js';
 import { auth, db } from './firebase.js';
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 import { collection, addDoc, getDocs, deleteDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
 // Obtener elementos del DOM
@@ -10,6 +10,11 @@ let publicacionesDiv = document.getElementById("publicaciones"); // Contenedor d
 let botonPublicar = document.getElementById("publicar"); // Botón para publicar
 let nuevaPublicacion = document.getElementById("nueva_publicacion"); // Área de texto para nueva publicación
 let idUsuario = null; // Almacenar el ID del usuario autenticado
+
+// Botón para publicar
+let nuevaPublicacion = document.getElementById("nueva_publicacion"); // Área de texto para nueva publicación
+let idUsuario = null; // Almacenar el ID del usuario autenticado
+let fotoPublicacion = document.getElementById("foto_publicacion"); // Input de archivo para subir imagen
 
 // Variables para el modal de edición
 let modalEditar = new bootstrap.Modal(document.getElementById('editarModal')); // Modal de edición
