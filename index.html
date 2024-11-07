@@ -59,21 +59,19 @@
        <!-- Botón para abrir el modal de actualización -->
         <button data-bs-toggle="modal" data-bs-target="#actualizarModal">Actualizar Perfil</button>
     </div>
- 
-    <!-- Textarea para hacer publicaciones -->
+ <!-- Textarea para hacer publicaciones -->
     <textarea cols="50" rows="5" id="nueva_publicacion" placeholder="Escribe tu publicación..."></textarea>
     <br><br>
- <label for="foto_publicacion">Sube una imagen (opcional):</label>
+    <label for="foto_publicacion">Sube una imagen (opcional):</label>
     <input type="file" id="foto_publicacion" accept="image/*">  
+  
 <button id="publicar">Publicar</button>
 
 
 
     <h2>COMENTARIOS</h2>
     <div id="publicaciones"></div>
-
-
-    <!-- Modal para editar publicación -->
+ <!-- Modal para editar publicación -->
     <div class="modal fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -118,6 +116,8 @@
             </div>
         </div>
     </div>
+  
+
   
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
