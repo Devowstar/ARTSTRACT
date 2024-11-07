@@ -11,10 +11,11 @@ let botonPublicar = document.getElementById("publicar"); // Botón para publicar
 let nuevaPublicacion = document.getElementById("nueva_publicacion"); // Área de texto para nueva publicación
 let idUsuario = null; // Almacenar el ID del usuario autenticado
 
-// Botón para publicar
-let nuevaPublicacion = document.getElementById("nueva_publicacion"); // Área de texto para nueva publicación
-let idUsuario = null; // Almacenar el ID del usuario autenticado
-let fotoPublicacion = document.getElementById("foto_publicacion"); // Input de archivo para subir imagen
+// Variables de modal para editar perfil
+let nuevoNombre = document.getElementById("nuevoNombre");
+let nuevaFoto = document.getElementById("nuevaFoto");
+let guardarPerfilBtn = document.getElementById("guardarPerfil");
+
 
 // Variables para el modal de edición
 let modalEditar = new bootstrap.Modal(document.getElementById('editarModal')); // Modal de edición
