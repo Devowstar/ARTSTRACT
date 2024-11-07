@@ -1,8 +1,9 @@
 // Importar Firebase y las funciones necesarias
 import './firebase.js';
-import { auth, db } from './firebase.js';
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
-import { collection, addDoc, getDocs, deleteDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+import { auth, db, storage } from './firebase.js';
+import { onAuthStateChanged, updateProfile, signOut } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import { query, orderBy, collection, addDoc, getDocs, deleteDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-storage.js";
 
 // Obtener elementos del DOM
 let nombreUsuario = document.getElementById("displayName"); // Nombre del usuario
@@ -10,12 +11,13 @@ let publicacionesDiv = document.getElementById("publicaciones"); // Contenedor d
 let botonPublicar = document.getElementById("publicar"); // Botón para publicar
 let nuevaPublicacion = document.getElementById("nueva_publicacion"); // Área de texto para nueva publicación
 let idUsuario = null; // Almacenar el ID del usuario autenticado
+let fotoPublicacion = document.getElementById("foto_publicacion"); // Input de archivo para subir imagen
+
 
 // Variables de modal para editar perfil
 let nuevoNombre = document.getElementById("nuevoNombre");
 let nuevaFoto = document.getElementById("nuevaFoto");
 let guardarPerfilBtn = document.getElementById("guardarPerfil");
-
 
 // Variables para el modal de edición
 let modalEditar = new bootstrap.Modal(document.getElementById('editarModal')); // Modal de edición
@@ -31,7 +33,7 @@ onAuthStateChanged(auth, (usuario) => {
 
         // Recuperar la foto de perfil
         const fotoPerfil = document.getElementById("fotoPerfil");
-        fotoPerfil.src = usuario.photoURL || "./img/per.jpg"; // Foto por defecto
+        fotoPerfil.src = usuario.photoURL || "perfil.jpeg"; // Foto por defecto
 
         cargarPublicaciones(); // Cargar publicaciones al iniciar sesión
     } else {
@@ -41,15 +43,27 @@ onAuthStateChanged(auth, (usuario) => {
 
 // Publicar nueva publicación
 botonPublicar.addEventListener("click", async () => {
-    if (nuevaPublicacion.value.trim() !== "") { // Verificar que el campo no esté vacío
+    if (nuevaPublicacion.value.trim() !== "" || fotoPublicacion.files.length > 0) {
         try {
+            let urlFoto = null; // Inicialmente sin foto
+            // Subir foto si existe
+            if (fotoPublicacion.files.length > 0) {
+                const archivoFoto = fotoPublicacion.files[0];
+                const fotoRef = ref(storage, 'fotos_publicaciones/' + archivoFoto.name);
+                await uploadBytes(fotoRef, archivoFoto);
+                urlFoto = await getDownloadURL(fotoRef);
+            }
+
             await addDoc(collection(db, "publicaciones"), {
                 texto: nuevaPublicacion.value, // Texto de la publicación
                 userId: idUsuario, // ID del usuario que publica
                 userName: auth.currentUser.displayName, // Nombre del usuario que publica
+                photoURL: auth.currentUser.photoURL,
+                imagenPublicacion: urlFoto,
                 timestamp: new Date() // Fecha y hora de la publicación
             });
             nuevaPublicacion.value = "";  // Limpiar el área de texto
+            fotoPublicacion.value = "";
             cargarPublicaciones(); // Recargar publicaciones
         } catch (error) {
             console.log("Error al publicar: ", error); // Manejar errores al publicar
@@ -62,9 +76,13 @@ botonPublicar.addEventListener("click", async () => {
 // Cargar todas las publicaciones
 async function cargarPublicaciones() {
     publicacionesDiv.innerHTML = ""; // Limpiar publicaciones previas
-    const consultaSnapshot = await getDocs(collection(db, "publicaciones")); // Obtener todas las publicaciones
-    consultaSnapshot.forEach((doc) => {
+    const publicacionesQuery = query(collection(db, "publicaciones"), orderBy("timestamp", "desc"));
+    const consulta = await getDocs(publicacionesQuery);
+
+    consulta.forEach((doc) => {
         const publicacion = doc.data(); // Datos de la publicación
+        console.log(publicacion);
+        
         const publicacionDiv = document.createElement("div"); // Crear un nuevo div para la publicación
         publicacionDiv.classList.add("publicacion"); // Agregar clase a la publicación
 
@@ -72,6 +90,10 @@ async function cargarPublicaciones() {
         let contenido = `
             <p><strong>${publicacion.userName}:</strong> ${publicacion.texto}</p>
         `;
+
+        if (publicacion.imagenPublicacion) {
+            contenido += `<img src="${publicacion.imagenPublicacion}" width="200" height="200">`;
+        }
 
         // Mostrar botones solo si es el autor de la publicación
         if (publicacion.userId === idUsuario) {
@@ -118,16 +140,18 @@ window.eliminarPublicacion = async function (id) {
     }
 };
 
-document.getElementById('toggle-button').addEventListener('click', function(event) {
+document.getElementById('toggle-button').addEventListener('click', function (event) {
     event.preventDefault(); // Prevenir el comportamiento predeterminado del enlace
     const sidebar = document.getElementById('sidebar');
     sidebar.classList.toggle('show'); // Cambia la clase para mostrar/ocultar
 });
 
 // Cerrar sidebar al hacer clic en el botón de cierre
-document.getElementById('close-button').addEventListener('click', function() {
+document.getElementById('close-button').addEventListener('click', function () {
     const sidebar = document.getElementById('sidebar');
     sidebar.classList.remove('show'); // Quitar la clase para ocultar
+});
+
 
 // Actualizar perfil (nombre y foto)
 guardarPerfilBtn.addEventListener("click", async () => {
